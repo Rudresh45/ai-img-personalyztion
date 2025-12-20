@@ -10,10 +10,6 @@ Transform children's photos into beautiful cartoon illustrations using AI! This 
 - ⚡ **Fast Processing**: Results in 25-35 seconds
 - 💾 **Easy Download**: One-click download of personalized illustrations
 
-## 🚀 Live Demo
-
-- **Frontend**: [Coming Soon - Deploy to Vercel]
-- **Backend API**: [Coming Soon - Deploy to Railway/Render]
 
 ## 🛠️ Tech Stack
 
@@ -35,8 +31,7 @@ See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions.
 
 ### Prerequisites
 - Python 3.8+
-- Node.js 16+
-- Hugging Face API token (free at https://huggingface.co/settings/tokens)
+
 
 ### Local Development
 
@@ -92,28 +87,7 @@ See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for comprehensive deployment inst
 └─────────────┘         └─────────────┘         └──────────────────┘
 ```
 
-## 🔑 Environment Variables
 
-### Backend (.env)
-```bash
-HUGGINGFACE_API_TOKEN=your_token_here
-FRONTEND_URL=https://your-frontend.vercel.app  # Production only
-DEBUG=False  # Production only
-```
-
-### Frontend (.env)
-```bash
-VITE_API_URL=http://localhost:8000/api  # Local
-# VITE_API_URL=https://your-backend.railway.app/api  # Production
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📝 License
-
-This project is open source and available under the MIT License.
 
 ## 🙏 Acknowledgments
 
