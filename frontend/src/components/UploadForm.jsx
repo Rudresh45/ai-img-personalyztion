@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
+import API_BASE_URL from '../config/api';
 
-const API_BASE_URL = 'http://localhost:8000/api';
 
 function UploadForm({ onUploadComplete, error }) {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -58,7 +58,16 @@ function UploadForm({ onUploadComplete, error }) {
             });
 
             if (!uploadResponse.ok) {
-                throw new Error('Upload failed');
+                // Try to get error message from response
+                let errorMessage = 'Upload failed';
+                try {
+                    const errorData = await uploadResponse.json();
+                    console.error('Upload error response:', errorData);
+                    errorMessage = errorData.error || errorData.uploaded_photo?.[0] || errorMessage;
+                } catch (e) {
+                    console.error('Failed to parse error response:', e);
+                }
+                throw new Error(errorMessage);
             }
 
             const uploadData = await uploadResponse.json();
@@ -70,14 +79,26 @@ function UploadForm({ onUploadComplete, error }) {
             });
 
             if (!processResponse.ok) {
-                throw new Error('Failed to start processing');
+                const errorData = await processResponse.json();
+                console.error('Process error response:', errorData);
+                throw new Error(errorData.error || 'Failed to start processing');
             }
 
             // Notify parent component
             onUploadComplete(requestId);
         } catch (err) {
             console.error('Upload error:', err);
-            alert('Failed to upload photo. Please try again.');
+
+            // Provide specific error messages
+            let userMessage = 'Failed to upload photo. Please try again.';
+
+            if (err.message.includes('Failed to fetch') || err.name === 'TypeError') {
+                userMessage = 'Cannot connect to server. Please check if the backend is running.';
+            } else if (err.message !== 'Upload failed' && err.message !== 'Failed to start processing') {
+                userMessage = err.message;
+            }
+
+            alert(userMessage);
         } finally {
             setIsUploading(false);
         }
@@ -113,7 +134,7 @@ function UploadForm({ onUploadComplete, error }) {
                         <strong>Click to upload</strong> or drag and drop
                     </p>
                     <p className="upload-hint">
-                        PNG, JPG 
+                        PNG, JPG
                     </p>
                     <input
                         ref={fileInputRef}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import API_BASE_URL from '../config/api';
 
-const API_BASE_URL = 'http://localhost:8000/api';
 
 function ProcessingStatus({ requestId, onComplete, onError }) {
     const [status, setStatus] = useState('processing');

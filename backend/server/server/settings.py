@@ -29,9 +29,13 @@ load_dotenv(dotenv_path=env_path)
 SECRET_KEY = 'django-insecure-nmf=@b5xp81*00k%rk!*w$0qr1a+pecc)^s#k!5v-slbc&oa3e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
+# Allow backend domain from environment variable
+BACKEND_DOMAIN = os.getenv('BACKEND_DOMAIN', '')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+if BACKEND_DOMAIN:
+    ALLOWED_HOSTS.append(BACKEND_DOMAIN)
 
 
 # Application definition
@@ -135,9 +139,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # CORS settings
+# Get frontend URL from environment variable (for production)
+FRONTEND_URL = os.getenv('FRONTEND_URL', '')
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
 ]
 
+# Add production frontend URL if provided
+if FRONTEND_URL:
+    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+
 CORS_ALLOW_CREDENTIALS = True
+
+# File upload settings
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
